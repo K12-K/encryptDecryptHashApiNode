@@ -10,6 +10,7 @@ app.use(bodyParser.json())
 // configure header for api key
 app.use((req, res, next) => {
     const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['X-RapidAPI-Key'] || req.headers['api-key']
+    console.log('SERVER_API....', SERVER_API)
     if (!SERVER_API) {
         return res.status(401).json({
             error: 'Unauthorized request!!! No api key provided'
