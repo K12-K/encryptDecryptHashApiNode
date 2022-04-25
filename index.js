@@ -7,10 +7,21 @@ const PORT = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 
+// configure header for api key
+app.use((req, res, next) => {
+    const SERVER_API = req.headers["x-rapidapi-key"] || req.headers['api-key']
+    if (!SERVER_API) {
+        return res.status(401).json({
+            error: 'Unauthorized request!!! No api key provided'
+        })
+    }
+    next()
+})
+
 // ------------------------ Hash With BCRYPT ----------------------------------- //
-app.post('/bcrypt/:api', async (req, res) => {
+app.post('/bcrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers["x-rapidapi-key"] || req.headers['api-key']
         const NO_OF_ROUNDS = Number.parseInt(req.query.rounds) || 10
         const data = req.body.data
         if (!data) return res.status(401).json({
@@ -30,9 +41,9 @@ app.post('/bcrypt/:api', async (req, res) => {
     }
 })
 
-app.post('/bcrypt/verify/:api', async (req, res) => {
+app.post('/bcrypt/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         if (!data || !hasheddata) return res.status(401).json({
@@ -54,9 +65,9 @@ app.post('/bcrypt/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With MD5 ----------------------------------- //
-app.post('/md5/:api', async (req, res) => {
+app.post('/md5', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const md5Hasher = crypto.createHmac('md5', SERVER_API)
         if (!data) return res.status(401).json({
@@ -77,9 +88,9 @@ app.post('/md5/:api', async (req, res) => {
     }
 })
 
-app.post('/md5/verify/:api', async (req, res) => {
+app.post('/md5/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const md5Hasher = crypto.createHmac('md5', SERVER_API)
@@ -102,9 +113,9 @@ app.post('/md5/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With SHA-256 ----------------------------------- //
-app.post('/sha256/:api', async (req, res) => {
+app.post('/sha256', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const sha256Hasher = crypto.createHmac('sha256', SERVER_API)
         if (!data) return res.status(401).json({
@@ -124,9 +135,9 @@ app.post('/sha256/:api', async (req, res) => {
     }
 })
 
-app.post('/sha256/verify/:api', async (req, res) => {
+app.post('/sha256/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const sha256Hasher = crypto.createHmac('sha256', SERVER_API)
@@ -149,9 +160,9 @@ app.post('/sha256/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With SHA-512 ----------------------------------- //
-app.post('/sha512/:api', async (req, res) => {
+app.post('/sha512', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const sha512Hasher = crypto.createHmac('sha512', SERVER_API)
         if (!data) return res.status(401).json({
@@ -171,9 +182,9 @@ app.post('/sha512/:api', async (req, res) => {
     }
 })
 
-app.post('/sha512/verify/:api', async (req, res) => {
+app.post('/sha512/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const sha512Hasher = crypto.createHmac('sha512', SERVER_API)
@@ -196,9 +207,9 @@ app.post('/sha512/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With SHA-1 ----------------------------------- //
-app.post('/sha1/:api', async (req, res) => {
+app.post('/sha1', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const sha1Hasher = crypto.createHmac('sha1', SERVER_API)
         if (!data) return res.status(401).json({
@@ -218,9 +229,9 @@ app.post('/sha1/:api', async (req, res) => {
     }
 })
 
-app.post('/sha1/verify/:api', async (req, res) => {
+app.post('/sha1/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const sha1Hasher = crypto.createHmac('sha1', SERVER_API)
@@ -243,9 +254,9 @@ app.post('/sha1/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With RipeMD-160 ----------------------------------- //
-app.post('/ripemd160/:api', async (req, res) => {
+app.post('/ripemd160', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const ripemd160Hasher = crypto.createHmac('ripemd160', SERVER_API)
         if (!data) return res.status(401).json({
@@ -265,9 +276,9 @@ app.post('/ripemd160/:api', async (req, res) => {
     }
 })
 
-app.post('/ripemd160/verify/:api', async (req, res) => {
+app.post('/ripemd160/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const ripemd160Hasher = crypto.createHmac('ripemd160', SERVER_API)
@@ -290,9 +301,9 @@ app.post('/ripemd160/verify/:api', async (req, res) => {
 
 
 // ------------------------ Hash With Whirlpool ----------------------------------- //
-app.post('/whirlpool/:api', async (req, res) => {
+app.post('/whirlpool', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const whirlpoolHasher = crypto.createHmac('whirlpool', SERVER_API)
         if (!data) return res.status(401).json({
@@ -312,9 +323,9 @@ app.post('/whirlpool/:api', async (req, res) => {
     }
 })
 
-app.post('/whirlpool/verify/:api', async (req, res) => {
+app.post('/whirlpool/verify', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         const hasheddata = req.body.hasheddata
         const whirlpoolHasher = crypto.createHmac('whirlpool', SERVER_API)
@@ -343,9 +354,9 @@ const SECRET_IV = "kknsjnfdjfn"
 const iv = crypto.createHash('sha512').update(SECRET_IV, 'utf-8').digest('hex').substring(0, 13)
 
 // ------------------------ Encrypt-Decrypt With AES-256-GCM ----------------------------------- //
-app.post('/aes256/encrypt/:api', async (req, res) => {
+app.post('/aes256/encrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
@@ -364,9 +375,9 @@ app.post('/aes256/encrypt/:api', async (req, res) => {
     }
 })
 
-app.post('/aes256/decrypt/:api', async (req, res) => {
+app.post('/aes256/decrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
@@ -386,9 +397,9 @@ app.post('/aes256/decrypt/:api', async (req, res) => {
 })
 
 // ------------------------ Encrypt-Decrypt With AES-192-GCM ----------------------------------- //
-app.post('/aes192/encrypt/:api', async (req, res) => {
+app.post('/aes192/encrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
@@ -407,9 +418,9 @@ app.post('/aes192/encrypt/:api', async (req, res) => {
     }
 })
 
-app.post('/aes192/decrypt/:api', async (req, res) => {
+app.post('/aes192/decrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
@@ -429,9 +440,9 @@ app.post('/aes192/decrypt/:api', async (req, res) => {
 })
 
 // ------------------------ Encrypt-Decrypt With AES-128-GCM ----------------------------------- //
-app.post('/aes128/encrypt/:api', async (req, res) => {
+app.post('/aes128/encrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
@@ -450,9 +461,9 @@ app.post('/aes128/encrypt/:api', async (req, res) => {
     }
 })
 
-app.post('/aes128/decrypt/:api', async (req, res) => {
+app.post('/aes128/decrypt', async (req, res) => {
     try {
-        const SERVER_API = req.params.api
+        const SERVER_API = req.headers['x-rapidapi-key'] || req.headers['api-key']
         const data = req.body.data
         if (!data) return res.status(401).json({
             message: 'Error',
